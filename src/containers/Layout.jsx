@@ -1,9 +1,10 @@
 import React,{Component} from 'react';
-import { Layout, Menu, Icon,Button } from 'antd';
+import { Layout, Menu, Icon,Button,Modal } from 'antd';
 import { Stage } from 'react-konva';
 import { Route, withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { delay } from '../config/utils';
+import PlayerDashboard from './PlayerDashboard';
 
 
 import { addNewPlayer,
@@ -32,6 +33,7 @@ const { Header, Sider, Content } = Layout;
  class BasicLayout extends React.Component {
   state = {
     collapsed: false,
+    dashboardVisible:false
   };
   toggle = () => {
     this.setState({
@@ -39,7 +41,8 @@ const { Header, Sider, Content } = Layout;
     });
   }
   render() {
-
+    console.log(this.state);
+  let {dashboardVisible} =this.state;
     const {
         players: {
             all,
@@ -62,6 +65,10 @@ const { Header, Sider, Content } = Layout;
           <div className="logo" >
           
           <Button onClick={this.rollDice} style={{marginTop:'550px'}}size='large'>Roll dice</Button>
+          <Button onClick={this.handleRestart} type="primary" icon="download" size='large'>Restart</Button>
+          <Button onClick ={()=>{this.setState({dashboardVisible:true})}}
+           type="danger" size="large">End Game</Button>
+          {this.state.diceOutput && <h2 style={{color: 'white'}}>{this.state.diceOutput}</h2>}
           </div>
           
         </Sider>
@@ -107,11 +114,32 @@ const { Header, Sider, Content } = Layout;
                     />
                   );
                 })}
+                
               </Stage>
+            <Modal
+          visible={dashboardVisible}
+          title="Player Dashboard"
+          width={720}
+          onCancel={()=>{this.setState({dashboardVisible:false})}}
+          footer={[
+            <Button key="submit" type="primary"  onClick={this.handleRestart}>
+              Restart Game
+            </Button>,
+          ]}
+        >
+          <PlayerDashboard players={all}/> 
+        </Modal>
+
+                         
           </Content>
         </Layout>
       </Layout>
     );
+  }
+
+  handleRestart = () =>{
+    this.setState({dashboardVisible:false});
+    this.props.restartGame();
   }
 
   resolveOccupancyOverload = () => {
@@ -181,8 +209,6 @@ const { Header, Sider, Content } = Layout;
     console.log(diceResult);
     this.setState({
       diceOutput: diceResult
-    },()=>{
-      console.log(this.state);
     });
     const newPos = pos + diceResult;
   
