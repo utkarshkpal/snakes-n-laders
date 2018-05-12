@@ -5,6 +5,8 @@ import { Route, withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { delay } from '../config/utils';
 import PlayerDashboard from './PlayerDashboard';
+import Players from './Players';
+import { GAME_ON } from '../config/variables';
 
 
 import { addNewPlayer,
@@ -40,10 +42,19 @@ const { Header, Sider, Content } = Layout;
       collapsed: !this.state.collapsed,
     });
   }
+
+  componentWillReceiveProps(nextProps){
+    if(this.props.gameData.status !== nextProps.gameData.status){
+      if(nextProps.gameData.status !== GAME_ON){
+        this.setState({dashboardVisible:true});
+      }
+    }
+  }
   render() {
     console.log(this.state);
   let {dashboardVisible} =this.state;
     const {
+      status,
         players: {
             all,
             current: { color: currentPlayerColor },
@@ -51,6 +62,7 @@ const { Header, Sider, Content } = Layout;
           },
         grid: { width, height, layout },
         grid,
+        players,
         snakes,
         ladders,
         } = this.props.gameData;
@@ -64,12 +76,16 @@ const { Header, Sider, Content } = Layout;
         >
           <div className="logo" >
           
-          <Button onClick={this.rollDice} style={{marginTop:'550px'}}size='large'>Roll dice</Button>
+          <Button disabled={status!==GAME_ON ? true:false} onClick={this.rollDice} style={{marginTop:'550px'}}size='large'>Roll dice</Button>
           <Button onClick={this.handleRestart} type="primary" icon="download" size='large'>Restart</Button>
           <Button onClick ={()=>{this.setState({dashboardVisible:true})}}
            type="danger" size="large">End Game</Button>
           {this.state.diceOutput && <h2 style={{color: 'white'}}>{this.state.diceOutput}</h2>}
           </div>
+          <Players
+                players={players}
+                addNewPlayer={this.addNewPlayer}
+              />
           
         </Sider>
         <Layout>
@@ -114,20 +130,19 @@ const { Header, Sider, Content } = Layout;
                     />
                   );
                 })}
-                
-              </Stage>
+           </Stage>
             <Modal
           visible={dashboardVisible}
           title="Player Dashboard"
-          width={720}
+          width={820}
           onCancel={()=>{this.setState({dashboardVisible:false})}}
           footer={[
             <Button key="submit" type="primary"  onClick={this.handleRestart}>
-              Restart Game
+              New Game
             </Button>,
           ]}
         >
-          <PlayerDashboard players={all}/> 
+          <PlayerDashboard status ={status} players={all}/> 
         </Modal>
 
                          
@@ -243,6 +258,12 @@ const { Header, Sider, Content } = Layout;
       }
     }
   }
+
+  addNewPlayer = () => {
+    this.props.addNewPlayer();
+    this.resolveOccupancyOverload();
+  }
+
 
 
   resolveOccupancyOverload = () => {

@@ -11,6 +11,29 @@ export function getRandomColor () {
   return colorPalette[(colorIndex++) % 4];
 };
 
+
+
+export function getColorFromId (id){
+ 
+  const colors = {
+    1:'#8e44ad',
+    2:'#e74c3c',
+    3:'#3498db',
+    4:'#f1c40f'
+  }
+  return colors[id];
+}
+
+export function getPlayerFromId (id){
+ 
+  const players = {
+    1:'Purple',
+    2:'Red',
+    3:'Blue',
+    4:'Yellow'
+  }
+  return players[id];
+}
 export function getLayout (width, height) {
 
   const gridWidth = width;

@@ -32,6 +32,7 @@ import {
 const firstPlayerColor = getRandomColor();
 
 const initialState = {
+  status: GAME_ON,
   players: {
     count: 1,
     persistence: 1,
