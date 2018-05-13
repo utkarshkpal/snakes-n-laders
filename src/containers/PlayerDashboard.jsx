@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Table} from 'antd';
 import { GAME_ON } from '../config/variables';
+import {getPlayerFromId,getColorFromId} from '../config/utils';
 
 
 
@@ -48,7 +49,7 @@ class PlayerDashboard extends Component {
            'sixRolled':elem.diceLog.filter(dice=>dice === 6).length,
            'laddersClimbed':elem.ladderHikes,
            'snakesEncountered':elem.snakeBites,
-           'playerId':`Player ${elem.id}`}
+           'playerId':`Player ${getPlayerFromId(elem.id)}`}
 
        });
       this.setState({dataSource});
@@ -67,10 +68,13 @@ class PlayerDashboard extends Component {
     render() {
         let {players,status} = this.props;
         let {dataSource,columns} = this.state; 
+        const winnerId = this.findWinner(players);
+        const winnerColor = getColorFromId(winnerId);
+        const winnerPlayer = getPlayerFromId(winnerId);
          return dataSource.length ?
          (
             <div>
-              {status !== GAME_ON && <h1>{`Player ${this.findWinner(players)} wins!!` }</h1>}
+              {status !== GAME_ON && <h1 style={{color:winnerColor}}>{`Player ${winnerPlayer} wins!!` }</h1>}
               <Table dataSource={dataSource} columns={columns} pagination={false}/>
             </div>
             

@@ -4,6 +4,7 @@ import { Circle, Layer, Group, Text } from 'react-konva';
 import { getPlayerCoordinates,getColorFromId } from '../config/utils';
 import { styles } from '../styles';
 
+
 export default class CanvasPlayer extends React.Component {
 
   render () {

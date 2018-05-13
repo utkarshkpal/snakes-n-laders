@@ -1,13 +1,14 @@
 import React,{Component} from 'react';
-import { Layout, Menu, Icon,Button,Modal } from 'antd';
+import { Layout, Menu, Icon,Button,Modal,message,Tooltip } from 'antd';
 import { Stage } from 'react-konva';
 import { Route, withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import { delay } from '../config/utils';
+import { delay,getPlayerFromId } from '../config/utils';
 import PlayerDashboard from './PlayerDashboard';
 import Players from './Players';
 import { GAME_ON } from '../config/variables';
 
+import '../assets/stylesheets/App.css';
 
 import { addNewPlayer,
   getRollDiceResult,
@@ -32,9 +33,15 @@ import Snake from '../components/Snake';
 const { Header, Sider, Content } = Layout;
 
 
- class BasicLayout extends React.Component {
+message.config({
+  top: 100,
+  duration: 2,
+  maxCount: 1,
+});
+
+class BasicLayout extends React.Component {
   state = {
-    collapsed: false,
+    
     dashboardVisible:false
   };
   toggle = () => {
@@ -42,16 +49,22 @@ const { Header, Sider, Content } = Layout;
       collapsed: !this.state.collapsed,
     });
   }
+  
 
   componentWillReceiveProps(nextProps){
-    if(this.props.gameData.status !== nextProps.gameData.status){
+    const {gameData} = this.props;
+    if(gameData.status !== nextProps.gameData.status){
       if(nextProps.gameData.status !== GAME_ON){
         this.setState({dashboardVisible:true});
       }
     }
+
+    if(gameData.players.current.id !== nextProps.gameData.players.current.id){
+      message.info(`Player ${getPlayerFromId(nextProps.gameData.players.current.id)} turn`);
+    }
   }
   render() {
-    console.log(this.state);
+    
   let {dashboardVisible} =this.state;
     const {
       status,
@@ -70,31 +83,41 @@ const { Header, Sider, Content } = Layout;
       <Layout>
         <Sider
           trigger={null}
-          collapsible
-          collapsed={this.state.collapsed}
+          
+          
           width={400}
         >
-          <div className="logo" >
           
-          <Button disabled={status!==GAME_ON ? true:false} onClick={this.rollDice} style={{marginTop:'550px'}}size='large'>Roll dice</Button>
-          <Button onClick={this.handleRestart} type="primary" icon="download" size='large'>Restart</Button>
-          <Button onClick ={()=>{this.setState({dashboardVisible:true})}}
-           type="danger" size="large">End Game</Button>
-          {this.state.diceOutput && <h2 style={{color: 'white'}}>{this.state.diceOutput}</h2>}
+          <div className="dice" >
+          {this.state.diceOutput && <h1 style={{color: 'white'}}>{this.state.diceOutput}</h1>}
           </div>
+          <div className="tools">
+          <div className="control-buttons">
+          <Tooltip placement="bottom" title="Roll Dice">
+          <Button  size="large" shape="circle" disabled={status!==GAME_ON ? true:false} onClick={this.rollDice} style={{}}size='large'><Icon type="appstore" /></Button>
+          </Tooltip>
+          
+          <Tooltip  placement="bottom" title="Restart Game">
+          <Button  size="large" shape="circle" onClick={this.handleRestart} size='large'>
+           <Icon type="reload" />
+          </Button>
+          </Tooltip>
+
+          <Tooltip  placement="bottom" title="End Game">
+          <Button size="large" shape="circle"onClick ={()=>{this.setState({dashboardVisible:true})}}
+           type="danger" size="large"><Icon type="close" /></Button></Tooltip>
+           </div>
+        
           <Players
                 players={players}
                 addNewPlayer={this.addNewPlayer}
               />
+              </div>
           
         </Sider>
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}>
-            <Icon
-              className="trigger"
-              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-              onClick={this.toggle}
-            />
+            <h1 style={{color:'#00142A'}}> Snakes N Ladders</h1>
           </Header>
           <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
           <Stage width={width} height={height}>
@@ -136,11 +159,14 @@ const { Header, Sider, Content } = Layout;
           title="Player Dashboard"
           width={820}
           onCancel={()=>{this.setState({dashboardVisible:false})}}
-          footer={[
-            <Button key="submit" type="primary"  onClick={this.handleRestart}>
-              New Game
-            </Button>,
-          ]}
+          footer={
+            <Tooltip placement="bottom" title="New Game">
+            <Button shape="circle" size="large" key="submit" type="primary"  onClick={this.handleRestart}>
+              <Icon type="reload" />
+            </Button>
+            </Tooltip>
+            
+          }
         >
           <PlayerDashboard status ={status} players={all}/> 
         </Modal>
@@ -213,7 +239,7 @@ const { Header, Sider, Content } = Layout;
   }
 
   rollDice = () => {
-    console.log('rollDice');
+    
     const {
       players: {
         current: { id, pos },
@@ -221,7 +247,7 @@ const { Header, Sider, Content } = Layout;
       }
     } = this.props.gameData;
     const diceResult = getRollDiceResult();
-    console.log(diceResult);
+    
     this.setState({
       diceOutput: diceResult
     });

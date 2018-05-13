@@ -7,14 +7,14 @@ const cta = {
   outline: 'none',
   fontSize: 16,
   cursor: 'pointer',
-  color: '#204d7b'
-}
+  color: '#204d7b',
+};
 
 export const styles = {
-  green:'#2ECC71',
-  yellow:'#F4D03F',
+  green: '#2ECC71',
+  yellow: '#F4D03F',
   white: '#FFFFFF',
-  blue:'#00142A',
+  blue: '#00142A',
   gray: '#999',
   white: '#fff',
   red: '#ff0000',
@@ -22,26 +22,26 @@ export const styles = {
     margin: 0,
     fontSize: 14,
     color: '#2c475d',
-    fontFamily: 'sans-serif'
+    fontFamily: 'sans-serif',
   },
   gameBlock: {
     display: 'inline-block',
     verticalAlign: 'top',
-    padding: 16
+    padding: 16,
   },
   dataBlock: {
     display: 'inline-block',
     verticalAlign: 'top',
     padding: 16,
-    minWidth: 320
+    minWidth: 320,
   },
   cta: cta,
   player: {
     marginRight: 16,
     borderRadius: '100%',
     border: '4px solid',
-    width: 64,
-    height: 64,
+    width: 42,
+    height: 42,
     textAlign: 'center',
     lineHeight: '64px',
     verticalAlign: 'middle',
@@ -49,13 +49,13 @@ export const styles = {
     marginRight: 16,
     color: '#fff',
     display: 'inline-block',
-    boxShadow: '0 3px 12px rgba(0, 0, 0, 0.1)'
+    boxShadow: '0 3px 12px rgba(0, 0, 0, 0.1)',
   },
   heading: {
     borderBottom: '2px solid #ddd',
     fontWeight: 300,
     paddingBottom: 4,
-    fontSize: 32
+    fontSize: 32,
   },
   commentry: {
     padding: 16,
@@ -63,7 +63,7 @@ export const styles = {
     borderRadius: 4,
     color: 'lime',
     marginTop: 32,
-    lineHeight: '1.6rem'
+    lineHeight: '1.6rem',
   },
   diceButton: {
     fontSize: 16,
@@ -76,37 +76,37 @@ export const styles = {
     color: '#fff',
     cursor: 'pointer',
     margin: '32px 0 0',
-    background: 'linear-gradient(141deg, #204d7b 0%, #204d7b 51%, #1781a9 75%)'
+    background: 'linear-gradient(141deg, #204d7b 0%, #204d7b 51%, #1781a9 75%)',
   },
   dice: {
     fontSize: 48,
     marginLeft: 12,
     verticalAlign: '-8px',
-    lineHeight: '16px'
+    lineHeight: '16px',
   },
   addPlayerCta: {
     ...cta,
     color: '#204d7b',
     float: 'right',
-    marginRight: 0
+    marginRight: 0,
   },
   endCta: {
     ...cta,
     marginTop: 32,
     color: 'red',
-    padding: '12px 24px'
+    padding: '12px 24px',
   },
   restartCta: {
     ...cta,
     padding: '12px 24px',
     marginTop: 32,
-    color: 'gray'
+    color: 'gray',
   },
   results: {
-    padding: '0 32px'
+    padding: '0 32px',
   },
   inlineBlock: {
-    display: 'inline-block'
+    display: 'inline-block',
   },
   resultCard: {
     marginRight: 16,
@@ -120,11 +120,11 @@ export const styles = {
     background: '#fff',
     color: '#222',
     fontSize: 16,
-    cursor: 'move'
+    cursor: 'move',
   },
   rules: {
     marginTop: 16,
     fontSize: 12,
-    color: '#ccc'
-  }
+    color: '#ccc',
+  },
 };
