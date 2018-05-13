@@ -7,7 +7,6 @@ import WebFont from 'webfontloader';
 
 import App from './containers/App';
 import configureStore from './store/configureStore';
-import './assets/stylesheets/index.scss';
 
 // react-md utilizes Google's material icons
 WebFont.load({ google: { families: ['Material Icons'] } });
